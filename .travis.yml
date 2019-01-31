@@ -8,3 +8,6 @@ cache:
 script:
 - mvn verify
 
+after_success:
+
+  - mvn tomcat7:deploy -Premote 
