@@ -36,8 +36,7 @@
     </dependencies>
 
     <build>
-        <plugins>
-            
+        <plugins>  
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -66,7 +65,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -86,35 +84,7 @@
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
-            </plugin>
-            <!-- <plugin>  
-                <groupId>org.apache.tomcat.maven</groupId>  
-                <artifactId>tomcat7-maven-plugin</artifactId>  
-                <version>2.2</version>  
-                <configuration>  
-                    <path>/</path>
-                    <port>7777</port>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>start-tomcat</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                        <configuration>
-                            <fork>true</fork>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>stop-tomcat</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>shutdown</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin> -->
+            </plugin> 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -144,7 +114,44 @@
     </build>
     <profiles>
         <profile>
-            <id>deployremote</id>
+            <id>test</id>
+            <build>
+                <plugins>
+                    <plugin>  
+                        <groupId>org.apache.tomcat.maven</groupId>  
+                        <artifactId>tomcat7-maven-plugin</artifactId>  
+                        <version>2.2</version>  
+                        <configuration>  
+                            <path>/</path>
+                            <port>7777</port>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>start-tomcat</id>
+                                <phase>pre-integration-test</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <fork>true</fork>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop-tomcat</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>shutdown</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+    
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>deploylocal</id>
             <build>
                 <plugins>
                     <plugin>  
@@ -153,6 +160,29 @@
                         <version>2.2</version>  
                         <configuration>
                             <url>http://localhost:8084/manager/text</url>  
+                            <server>TomcatServer</server>
+                            <path>/deploylocal</path>
+                            <username>ide</username>
+                            <password>aLI3UMDq</password>
+                            <update>true</update>
+                        </configuration>  
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+
+        <profile>
+            <id>deployremote</id>
+            <build>
+                <plugins>
+                    <plugin>  
+                        <groupId>org.apache.tomcat.maven</groupId>  
+                        <artifactId>tomcat7-maven-plugin</artifactId>  
+                        <version>2.2</version>  
+                        <configuration>
+                            <url>http://188.166.16.16:8080/manager/text</url>  
                             <server>TomcatServer</server>
                             <path>/deployremote</path>
                             <username>admin</username>
